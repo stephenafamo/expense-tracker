@@ -13,77 +13,116 @@ import "testing"
 // Separating the tests thusly grants avoidance of Postgres deadlocks.
 func TestParent(t *testing.T) {
 	t.Run("Categories", testCategories)
+	t.Run("HTTPSessions", testHTTPSessions)
 	t.Run("Transactions", testTransactions)
 	t.Run("Types", testTypes)
+	t.Run("UserTokens", testUserTokens)
+	t.Run("Users", testUsers)
 }
 
 func TestDelete(t *testing.T) {
 	t.Run("Categories", testCategoriesDelete)
+	t.Run("HTTPSessions", testHTTPSessionsDelete)
 	t.Run("Transactions", testTransactionsDelete)
 	t.Run("Types", testTypesDelete)
+	t.Run("UserTokens", testUserTokensDelete)
+	t.Run("Users", testUsersDelete)
 }
 
 func TestQueryDeleteAll(t *testing.T) {
 	t.Run("Categories", testCategoriesQueryDeleteAll)
+	t.Run("HTTPSessions", testHTTPSessionsQueryDeleteAll)
 	t.Run("Transactions", testTransactionsQueryDeleteAll)
 	t.Run("Types", testTypesQueryDeleteAll)
+	t.Run("UserTokens", testUserTokensQueryDeleteAll)
+	t.Run("Users", testUsersQueryDeleteAll)
 }
 
 func TestSliceDeleteAll(t *testing.T) {
 	t.Run("Categories", testCategoriesSliceDeleteAll)
+	t.Run("HTTPSessions", testHTTPSessionsSliceDeleteAll)
 	t.Run("Transactions", testTransactionsSliceDeleteAll)
 	t.Run("Types", testTypesSliceDeleteAll)
+	t.Run("UserTokens", testUserTokensSliceDeleteAll)
+	t.Run("Users", testUsersSliceDeleteAll)
 }
 
 func TestExists(t *testing.T) {
 	t.Run("Categories", testCategoriesExists)
+	t.Run("HTTPSessions", testHTTPSessionsExists)
 	t.Run("Transactions", testTransactionsExists)
 	t.Run("Types", testTypesExists)
+	t.Run("UserTokens", testUserTokensExists)
+	t.Run("Users", testUsersExists)
 }
 
 func TestFind(t *testing.T) {
 	t.Run("Categories", testCategoriesFind)
+	t.Run("HTTPSessions", testHTTPSessionsFind)
 	t.Run("Transactions", testTransactionsFind)
 	t.Run("Types", testTypesFind)
+	t.Run("UserTokens", testUserTokensFind)
+	t.Run("Users", testUsersFind)
 }
 
 func TestBind(t *testing.T) {
 	t.Run("Categories", testCategoriesBind)
+	t.Run("HTTPSessions", testHTTPSessionsBind)
 	t.Run("Transactions", testTransactionsBind)
 	t.Run("Types", testTypesBind)
+	t.Run("UserTokens", testUserTokensBind)
+	t.Run("Users", testUsersBind)
 }
 
 func TestOne(t *testing.T) {
 	t.Run("Categories", testCategoriesOne)
+	t.Run("HTTPSessions", testHTTPSessionsOne)
 	t.Run("Transactions", testTransactionsOne)
 	t.Run("Types", testTypesOne)
+	t.Run("UserTokens", testUserTokensOne)
+	t.Run("Users", testUsersOne)
 }
 
 func TestAll(t *testing.T) {
 	t.Run("Categories", testCategoriesAll)
+	t.Run("HTTPSessions", testHTTPSessionsAll)
 	t.Run("Transactions", testTransactionsAll)
 	t.Run("Types", testTypesAll)
+	t.Run("UserTokens", testUserTokensAll)
+	t.Run("Users", testUsersAll)
 }
 
 func TestCount(t *testing.T) {
 	t.Run("Categories", testCategoriesCount)
+	t.Run("HTTPSessions", testHTTPSessionsCount)
 	t.Run("Transactions", testTransactionsCount)
 	t.Run("Types", testTypesCount)
+	t.Run("UserTokens", testUserTokensCount)
+	t.Run("Users", testUsersCount)
 }
 
 func TestHooks(t *testing.T) {
 	t.Run("Categories", testCategoriesHooks)
+	t.Run("HTTPSessions", testHTTPSessionsHooks)
 	t.Run("Transactions", testTransactionsHooks)
 	t.Run("Types", testTypesHooks)
+	t.Run("UserTokens", testUserTokensHooks)
+	t.Run("Users", testUsersHooks)
 }
 
 func TestInsert(t *testing.T) {
 	t.Run("Categories", testCategoriesInsert)
 	t.Run("Categories", testCategoriesInsertWhitelist)
+	t.Run("HTTPSessions", testHTTPSessionsInsert)
+	t.Run("HTTPSessions", testHTTPSessionsInsertWhitelist)
 	t.Run("Transactions", testTransactionsInsert)
 	t.Run("Transactions", testTransactionsInsertWhitelist)
 	t.Run("Types", testTypesInsert)
 	t.Run("Types", testTypesInsertWhitelist)
+	t.Run("UserTokens", testUserTokensInsert)
+	t.Run("UserTokens", testUserTokensInsertWhitelist)
+	t.Run("Users", testUsersInsert)
+	t.Run("Users", testUsersInsertWhitelist)
 }
 
 // TestToOne tests cannot be run in parallel
@@ -91,6 +130,7 @@ func TestInsert(t *testing.T) {
 func TestToOne(t *testing.T) {
 	t.Run("TransactionToTypeUsingType", testTransactionToOneTypeUsingType)
 	t.Run("TransactionToCategoryUsingCategory", testTransactionToOneCategoryUsingCategory)
+	t.Run("UserTokenToUserUsingUser", testUserTokenToOneUserUsingUser)
 }
 
 // TestOneToOne tests cannot be run in parallel
@@ -102,6 +142,7 @@ func TestOneToOne(t *testing.T) {}
 func TestToMany(t *testing.T) {
 	t.Run("CategoryToTransactions", testCategoryToManyTransactions)
 	t.Run("TypeToTransactions", testTypeToManyTransactions)
+	t.Run("UserToUserTokens", testUserToManyUserTokens)
 }
 
 // TestToOneSet tests cannot be run in parallel
@@ -109,6 +150,7 @@ func TestToMany(t *testing.T) {
 func TestToOneSet(t *testing.T) {
 	t.Run("TransactionToTypeUsingTransactions", testTransactionToOneSetOpTypeUsingType)
 	t.Run("TransactionToCategoryUsingTransactions", testTransactionToOneSetOpCategoryUsingCategory)
+	t.Run("UserTokenToUserUsingUserTokens", testUserTokenToOneSetOpUserUsingUser)
 }
 
 // TestToOneRemove tests cannot be run in parallel
@@ -131,6 +173,7 @@ func TestOneToOneRemove(t *testing.T) {}
 func TestToManyAdd(t *testing.T) {
 	t.Run("CategoryToTransactions", testCategoryToManyAddOpTransactions)
 	t.Run("TypeToTransactions", testTypeToManyAddOpTransactions)
+	t.Run("UserToUserTokens", testUserToManyAddOpUserTokens)
 }
 
 // TestToManySet tests cannot be run in parallel
@@ -149,30 +192,45 @@ func TestToManyRemove(t *testing.T) {
 
 func TestReload(t *testing.T) {
 	t.Run("Categories", testCategoriesReload)
+	t.Run("HTTPSessions", testHTTPSessionsReload)
 	t.Run("Transactions", testTransactionsReload)
 	t.Run("Types", testTypesReload)
+	t.Run("UserTokens", testUserTokensReload)
+	t.Run("Users", testUsersReload)
 }
 
 func TestReloadAll(t *testing.T) {
 	t.Run("Categories", testCategoriesReloadAll)
+	t.Run("HTTPSessions", testHTTPSessionsReloadAll)
 	t.Run("Transactions", testTransactionsReloadAll)
 	t.Run("Types", testTypesReloadAll)
+	t.Run("UserTokens", testUserTokensReloadAll)
+	t.Run("Users", testUsersReloadAll)
 }
 
 func TestSelect(t *testing.T) {
 	t.Run("Categories", testCategoriesSelect)
+	t.Run("HTTPSessions", testHTTPSessionsSelect)
 	t.Run("Transactions", testTransactionsSelect)
 	t.Run("Types", testTypesSelect)
+	t.Run("UserTokens", testUserTokensSelect)
+	t.Run("Users", testUsersSelect)
 }
 
 func TestUpdate(t *testing.T) {
 	t.Run("Categories", testCategoriesUpdate)
+	t.Run("HTTPSessions", testHTTPSessionsUpdate)
 	t.Run("Transactions", testTransactionsUpdate)
 	t.Run("Types", testTypesUpdate)
+	t.Run("UserTokens", testUserTokensUpdate)
+	t.Run("Users", testUsersUpdate)
 }
 
 func TestSliceUpdateAll(t *testing.T) {
 	t.Run("Categories", testCategoriesSliceUpdateAll)
+	t.Run("HTTPSessions", testHTTPSessionsSliceUpdateAll)
 	t.Run("Transactions", testTransactionsSliceUpdateAll)
 	t.Run("Types", testTypesSliceUpdateAll)
+	t.Run("UserTokens", testUserTokensSliceUpdateAll)
+	t.Run("Users", testUsersSliceUpdateAll)
 }

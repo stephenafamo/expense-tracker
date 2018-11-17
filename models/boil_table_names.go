@@ -5,10 +5,16 @@ package models
 
 var TableNames = struct {
 	Categories   string
+	HTTPSessions string
 	Transactions string
 	Types        string
+	UserTokens   string
+	Users        string
 }{
 	Categories:   "categories",
+	HTTPSessions: "http_sessions",
 	Transactions: "transactions",
 	Types:        "types",
+	UserTokens:   "user_tokens",
+	Users:        "users",
 }
