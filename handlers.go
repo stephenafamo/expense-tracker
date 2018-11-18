@@ -1,16 +1,13 @@
 package main
 
 import (
-	// "encoding/json"
-	// "fmt"
 	"net/http"
 	"time"
 
 	"github.com/go-chi/chi"
-	// "github.com/spf13/viper"
 	"github.com/volatiletech/null"
 	"github.com/volatiletech/sqlboiler/boil"
-	// amodels "github.com/stephenafamo/expense-tracker/auth_models"
+	"github.com/volatiletech/sqlboiler/queries/qm"
 	"github.com/stephenafamo/expense-tracker/models"
 	"github.com/volatiletech/authboss"
 )
@@ -108,6 +105,53 @@ func (s *server) registerHandlers() {
 			}
 
 			http.Redirect(w, r, r.Header.Get("Referer"), 302)
+		}
+	}
+
+	s.Handlers["ViewTransaction"] = func() http.HandlerFunc {
+		return func(w http.ResponseWriter, r *http.Request) {
+			var err error
+
+			ctx := r.Context()
+			id := chi.URLParam(r, "id")
+
+			info := make(map[string]interface{})
+			info["BaseUrl"] = getBaseUrl().String()
+			info["auth_data"] = ctx.Value(authboss.CTXKeyData)
+
+			transaction, err := models.Transactions(
+				qm.Load("Category"),
+				qm.Load("Type"),
+				qm.Where("id=?", id),
+			).One(ctx, s.DB)
+			if err != nil {
+				checkError(err)
+				http.Error(w, "Cannot retrieve transaction", 500)
+				return
+			}
+			info["transaction"] = transaction
+			info["tDate"] = transaction.CreatedAt.Time.Format("2006-01-02")
+
+			types, err := models.Types().All(ctx, s.DB)
+			if err != nil {
+				checkError(err)
+				http.Error(w, "Cannot retrieve types", 500)
+				return
+			}
+			info["types"] = types
+
+			categories, err := models.Categories().All(ctx, s.DB)
+			if err != nil {
+				checkError(err)
+				http.Error(w, "Cannot retrieve categories", 500)
+				return
+			}
+			info["categories"] = categories
+
+			data, err := s.render("view-transaction", info)
+			checkError(err)
+
+			w.Write([]byte(data))
 		}
 	}
 

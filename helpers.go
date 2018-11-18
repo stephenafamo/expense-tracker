@@ -9,8 +9,6 @@ import (
 	"github.com/spf13/viper"
 	"github.com/stephenafamo/expense-tracker/models"
 	"github.com/volatiletech/sqlboiler/queries/qm"
-	// "github.com/volatiletech/authboss"
-	// models "github.com/stephenafamo/expense-tracker/auth_models"
 )
 
 type PartialProvider struct {

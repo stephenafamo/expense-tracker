@@ -11,7 +11,7 @@
 </head>
 
 <body class="login-page">
-    <h2 class="black-text">Add Transaction</h2>
+    <h2 class="black-text">Viewing Transaction: {{transaction.Narration}}</h2>
 
     <div style="padding-bottom: 1%;">
         <a style="text-decoration: none;" href="/transactions">
@@ -47,22 +47,22 @@
 
             <div>
                 <label for="narration">Narration</label>
-                <input type="text" placeholder="Drinks" id="narration" name="narration" required autofocus >
+                <input type="text" placeholder="Drinks" id="narration" name="narration" value="{{transaction.Narration}}" required autofocus >
             </div>
 
             <div>
                 <label for="amount">Amount</label>
-                <input type="number" name="amount" min="0" step="any" id="amount" name="amount" required>
+                <input type="number" name="amount" min="0" step="any" id="amount" name="amount" value="{{transaction.Amount}}" required>
             </div>
 
             <div>
                 <label for="currency">Currency</label>
-                <input type="text" value="NGN" id="currency" name="currency">
+                <input type="text" id="currency" name="currency" value="{{transaction.Currency}}">
             </div>
 
             <div>
                 <label for="exchange-rate">Exchange Rate</label>
-                <input type="number" min="0" step="any" value="1.00" id="exchange-rate" name="exchange-rate">
+                <input type="number" min="0" step="any" id="exchange-rate" name="exchange-rate" value="{{transaction.ExchangeRate}}">
             </div>
 
             <div>
@@ -76,9 +76,14 @@
             {{#auth_data.flash_success}}
             alert("{{auth_data.flash_success}}")
             {{/auth_data.flash_success}}
+
+            document.getElementById("type").value = "{{transaction.R.Type.ID}}";
+            document.getElementById("category").value = "{{transaction.R.Category.ID}}";
+
+            document.getElementById("date").value = "{{tDate}}";
         </script>
 
-        <button type="submit">ADD</button>
+        <button type="submit">SAVE CHANGES</button>
     </form>
 </body>
 
