@@ -155,6 +155,74 @@ func (s *server) registerHandlers() {
 		}
 	}
 
+	s.Handlers["EditTransaction"] = func() http.HandlerFunc {
+		return func(w http.ResponseWriter, r *http.Request) {
+			var err error
+			ctx := r.Context()
+			id := chi.URLParam(r, "id")
+
+			t, err := models.FindTransaction(ctx, s.DB, id)
+			if err != nil {
+				checkError(err)
+				http.Error(w, "Cannot retrieve transaction", 500)
+				return
+			}
+
+			t.Narration = r.FormValue("narration")
+
+			err = t.Amount.Scan(r.FormValue("amount"))
+			if err != nil {
+				checkError(err)
+				http.Error(w, "Error adding product", 500)
+				return
+			}
+
+			if r.FormValue("exchange-rate") != "" {
+				err = t.ExchangeRate.Scan(r.FormValue("exchange-rate"))
+				if err != nil {
+					checkError(err)
+					http.Error(w, "Error adding product", 500)
+					return
+				}
+			}
+
+			if r.FormValue("category") != "" {
+				t.CategoryID = null.StringFrom(r.FormValue("category"))
+			}
+
+			if r.FormValue("type") != "" {
+				t.TypeID = null.StringFrom(r.FormValue("type"))
+			}
+
+			if r.FormValue("currency") != "" {
+				t.Currency = r.FormValue("currency")
+			}
+
+			if r.FormValue("date") != "" {
+				var theTime time.Time
+				theTime, err = time.Parse("2006-01-02", r.FormValue("date"))
+				if err != nil {
+					checkError(err)
+					http.Error(w, "Error adding product", 500)
+					return
+				}
+
+				t.CreatedAt = null.TimeFrom(theTime)
+			}
+
+			_, err = t.Update(ctx, s.DB, boil.Blacklist("amount_local"))
+			if err != nil {
+				checkError(err)
+				http.Error(w, "Error updating product", 500)
+				return
+			}
+
+			authboss.PutSession(w, authboss.FlashSuccessKey, "Transaction updated successfully")
+
+			http.Redirect(w, r, r.Header.Get("Referer"), 302)
+		}
+	}
+
 	s.Handlers["AddTransactionForm"] = func() http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {
 			var err error

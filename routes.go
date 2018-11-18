@@ -38,8 +38,7 @@ func (s *server) loadRoutes() {
 
 		protect.Get("/transactions/add", s.Handlers.use("AddTransactionForm"))
 		protect.Post("/transactions/add", s.Handlers.use("AddTransaction"))
-		protect.Post("/transactions", s.Handlers.use("AddTransaction"))
-
+		
 		protect.Get("/transaction/{id}", s.Handlers.use("ViewTransaction"))
 		protect.Post("/transaction/{id}", s.Handlers.use("EditTransaction"))
 		protect.Post("/transaction/{id}/delete", s.Handlers.use("DeleteTransaction"))
