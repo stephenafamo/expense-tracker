@@ -1,0 +1,2 @@
+TRUNCATE categories CASCADE;
+TRUNCATE types CASCADE;

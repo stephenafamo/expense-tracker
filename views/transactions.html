@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>
+        Expense Tracker
+    </title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+</head>
+
+<body class="login-page">
+    <h2 class="black-text">Transactions (Number: {{tConn.Total}})</h2>
+    
+    <div style="padding-bottom: 2%;">
+        <a style="text-decoration: none;" href="/transactions/add">
+          <button>ADD NEW TRANSACTION</button>
+        </a>
+    </div>
+    
+    <form class="form" method="GET" action="" name="filter" style="display: inline-block;">
+
+        <label for="category">Category:</label>
+        <select id="category" name="category">
+            <option value="">--All--</option>
+            {{#categories}}
+            <option value="{{Name}}">{{Name}}</option>
+            {{/categories}}
+        </select>
+
+        <label for="type">Type:</label>
+        <select id="type" name="type">
+            <option value="">--All--</option>
+            {{#types}}
+            <option value="{{Name}}">{{Name}}</option>
+            {{/types}}
+        </select>
+
+        <label for="from">From:</label>
+        <input type="date" id="from" name="from">
+
+        <label for="to">To:</label>
+        <input type="date" id="to" name="to">
+
+        <button>FILTER</button>
+
+    </form>
+
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Narration</th>
+            <th>Amount</th>
+            <th>Category</th>
+            <th>Type</th>
+            <th>Actions</th>
+        </tr>
+        {{#tConn.Transactions}}
+        <tr>
+            <td class="datetime" data-time="{{CreatedAt.Time.String}}"></td>
+            <td>{{Narration}}</td>
+            <td class="amount" data-currency="{{Currency}}" data-amount="{{Amount}}"></td>
+            <td>{{R.Category.Name}}</td>
+            <td>{{R.Type.Name}}</td>
+            <td>
+                <a href="/transaction/{{ID}}"><button>View</button></a>
+                <form class="form" method="POST" action="/transaction/{{ID}}/delete" name="deleteTransaction" onsubmit='return confirmDelete(event, "{{Narration}}")' style="display: inline-block;">
+                    <input type="hidden" name="csrf_token" value="{{auth_data.csrf_token}}">
+                    <input type="submit" value="Delete"></input>
+                </form>
+            </td>
+        </tr>
+        {{/tConn.Transactions}}
+    </table>
+
+    <a style="text-decoration: none;" id="first-page-button">
+      <button {{^tConn.HasPreviousPage}}disabled{{/tConn.HasPreviousPage}}>FIRST PAGE</button>
+    </a>
+    <a style="text-decoration: none;" id="prev-page-button">
+      <button {{^tConn.HasPreviousPage}}disabled{{/tConn.HasPreviousPage}}>PREVIOUS PAGE</button>
+    </a>
+    <a style="text-decoration: none;" id="next-page-button">
+      <button {{^tConn.HasNextPage}}disabled{{/tConn.HasNextPage}}>NEXT PAGE</button>
+    </a>
+    <a style="text-decoration: none;" id="last-page-button">
+      <button {{^tConn.HasNextPage}}disabled{{/tConn.HasNextPage}}>LAST PAGE</button>
+    </a>
+
+    <script>
+        document.getElementById("type").value = "{{tConn.Type}}";
+        document.getElementById("category").value = "{{tConn.Category}}";
+
+        document.getElementById("from").value = "{{tConn.From}}";
+        document.getElementById("to").value = "{{tConn.To}}";
+
+        var dates = document.getElementsByClassName("datetime")
+        for (var i = 0; i < dates.length; i++) {
+            var created_at = new Date(dates[i].getAttribute("data-time"));
+            dates[i].innerHTML = created_at.toDateString()
+        }
+
+        var amounts = document.getElementsByClassName("amount")
+        for (var i = 0; i < amounts.length; i++) {
+
+            var amount = amounts[i].getAttribute("data-amount")
+            var currency = amounts[i].getAttribute("data-currency")
+
+            const formatter = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: currency,
+                minimumFractionDigits: 2
+            })
+
+            amounts[i].innerHTML = formatter.format(amount)
+        }
+
+        
+        {{#tConn.HasPreviousPage}}
+
+        var firstPageUrl = new URL(window.location.href);
+        firstPageUrl.searchParams.set('first', 24);
+        document.getElementById("first-page-button").href = firstPageUrl.href
+
+        var prevPageUrl = new URL(window.location.href);
+        prevPageUrl.searchParams.set('last', 24);
+        prevPageUrl.searchParams.set('before', "{{tConn.FirstPid}}");
+        document.getElementById("prev-page-button").href = prevPageUrl.href
+
+        {{/tConn.HasPreviousPage}}
+
+        {{#tConn.HasNextPage}}
+
+        var nextPageUrl = new URL(window.location.href);
+        nextPageUrl.searchParams.set('first', 24);
+        nextPageUrl.searchParams.set('after', "{{tConn.LastPid}}")
+        document.getElementById("next-page-button").href = nextPageUrl.href
+
+        var lastPageUrl = new URL(window.location.href);
+        lastPageUrl.searchParams.set('last', 24);
+        document.getElementById("last-page-button").href = lastPageUrl.href
+        {{/tConn.HasNextPage}}
+
+
+        function confirmDelete(e, narration) {
+            if (confirm("Are you sure you want to delete the transaction \"" + narration + "\" ?"))
+                return true;
+            else
+                return false;
+        }
+        </script>
+
+    </body>
+
+    </html>

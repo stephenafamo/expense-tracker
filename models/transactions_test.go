@@ -888,7 +888,7 @@ func testTransactionsSelect(t *testing.T) {
 }
 
 var (
-	transactionDBTypes = map[string]string{`Amount`: `decimal`, `AmountLocal`: `decimal`, `CategoryID`: `uuid`, `CreatedAt`: `timestamp with time zone`, `Currency`: `string`, `ExchangeRate`: `integer`, `ID`: `uuid`, `Narration`: `string`, `TypeID`: `uuid`, `UpdatedAt`: `timestamp with time zone`}
+	transactionDBTypes = map[string]string{`Amount`: `decimal`, `AmountLocal`: `decimal`, `CategoryID`: `uuid`, `CreatedAt`: `timestamp with time zone`, `Currency`: `string`, `ExchangeRate`: `decimal`, `ID`: `uuid`, `Narration`: `string`, `TypeID`: `uuid`, `UpdatedAt`: `timestamp with time zone`}
 	_                  = bytes.MinRead
 )
 

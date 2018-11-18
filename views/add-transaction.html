@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>
+        Expense Tracker
+    </title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+</head>
+
+<body class="login-page">
+    <h2 class="black-text">Add Transaction</h2>
+
+    <div style="padding-bottom: 1%;">
+        <a style="text-decoration: none;" href="/transactions">
+            <button>ALL TRANSACTIONS</button>
+        </a>
+    </div>
+
+    <div>
+
+        <form class="form" method="POST" action="" name="addTransactionForm">
+            <p id="error_message">{{error}}</p>
+            <input type="hidden" name="csrf_token" value="{{auth_data.csrf_token}}">
+
+            <div>
+                <label for="category">Category</label>
+                <select id="category" name="category">
+                    <option value="">None</option>
+                    {{#categories}}
+                    <option value="{{ID}}">{{Name}}</option>
+                    {{/categories}}
+                </select>
+            </div>
+
+            <div>
+                <label for="type">Type</label>
+                <select id="type" name="type">
+                    <option value="">None</option>
+                    {{#types}}
+                    <option value="{{ID}}">{{Name}}</option>
+                    {{/types}}
+                </select>
+            </div>
+
+            <div>
+                <label for="narration">Narration</label>
+                <input type="text" placeholder="Drinks" id="narration" name="narration" required autofocus >
+            </div>
+
+            <div>
+                <label for="amount">Amount</label>
+                <input type="number" name="amount" min="0" step="any" id="amount" name="amount" required>
+            </div>
+
+            <div>
+                <label for="currency">Currency</label>
+                <input type="text" value="NGN" id="currency" name="currency">
+            </div>
+
+            <div>
+                <label for="exchange-rate">Exchange Rate</label>
+                <input type="number" name="amount" min="0" step="any" value="1.00" id="exchange-rate" name="exchange-rate">
+            </div>
+
+            <div>
+                <label for="date">Date (leave blank for today)</label>
+                <input type="date" id="date" name="date">
+            </div>
+
+        </div>
+
+        <script>
+            {{#auth_data.flash_success}}
+            alert("{{auth_data.flash_success}}")
+            {{/auth_data.flash_success}}
+        </script>
+
+        <button type="submit">ADD</button>
+    </form>
+</body>
+
+</html>

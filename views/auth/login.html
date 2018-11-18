@@ -11,31 +11,27 @@
 </head>
 
 <body class="login-page">
-    <form class="form" method="POST" action="" name="LoinForm">
-        <h3 class="black-text">Login</h3>
-        <div class="card-body pb-0">
+    <form class="form" method="POST" action="" name="LoginForm">
+        <h2>Login</h2>
+        <div>
 
             <p id="error_message" class="error-text pull-left pb-1 mb-0">{{error}}</p>
             <input type="hidden" name="csrf_token" value="{{csrf_token}}">
 
-            <div class="input-group  input-lg pb-2">
+            <div>
                 <input type="email" class="form-control" placeholder="Email Address" id="email" name="email" required="" autofocus >
             </div>
 
-            <div class="input-group  input-lg pb-2">
+            <div>
                 <input type="password" placeholder="Password" class="form-control" id="password" name="password" required="" />
             </div>
 
         </div>
 
-        <span class=" pl-4 pull-left pb-2"><input type="checkbox" name="checkbox" class="bootstrap-switch" checked /><p class="small-text">Remember me</p> </span>
+        <span><input type="checkbox" name="checkbox" class="bootstrap-switch" checked /><p class="small-text">Remember me</p> </span>
 
+        <button type="submit">LOGIN</button>
 
-        <div class=" text-center px-5">
-
-            <button type="submit" href="#pablo" class="btn btn-theme px-1 btn-round btn-lg btn-block">LOGIN</button>
-
-        </div>
     </form>
 </body>
 

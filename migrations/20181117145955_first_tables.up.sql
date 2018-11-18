@@ -23,7 +23,7 @@ CREATE TABLE transactions (
 	narration STRING NOT NULL,
 	amount NUMERIC NOT NULL,
 	currency STRING NOT NULL DEFAULT 'NGN',
-	exchange_rate INTEGER NOT NULL DEFAULT 1,
+	exchange_rate NUMERIC NOT NULL DEFAULT 1,
 	amount_local NUMERIC AS (amount * exchange_rate) STORED,
 	created_at TIMESTAMP WITH TIME ZONE NULL DEFAULT current_timestamp(),
 	updated_at TIMESTAMP WITH TIME ZONE NULL,

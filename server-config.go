@@ -4,7 +4,6 @@ import (
 	"context"
 	"crypto/sha256"
 	"database/sql"
-	"fmt"
 
 	"github.com/cbroglie/mustache"
 	"github.com/go-chi/chi"
@@ -26,8 +25,6 @@ import (
 
 	"github.com/volatiletech/authboss/defaults"
 )
-
-var _ = fmt.Printf
 
 type server struct {
 	router       *chi.Mux

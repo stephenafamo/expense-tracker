@@ -30,7 +30,7 @@ type Transaction struct {
 	Narration    string            `boil:"narration" json:"narration" toml:"narration" yaml:"narration"`
 	Amount       types.Decimal     `boil:"amount" json:"amount" toml:"amount" yaml:"amount"`
 	Currency     string            `boil:"currency" json:"currency" toml:"currency" yaml:"currency"`
-	ExchangeRate int               `boil:"exchange_rate" json:"exchange_rate" toml:"exchange_rate" yaml:"exchange_rate"`
+	ExchangeRate types.Decimal     `boil:"exchange_rate" json:"exchange_rate" toml:"exchange_rate" yaml:"exchange_rate"`
 	AmountLocal  types.NullDecimal `boil:"amount_local" json:"amount_local,omitempty" toml:"amount_local" yaml:"amount_local,omitempty"`
 	CreatedAt    null.Time         `boil:"created_at" json:"created_at,omitempty" toml:"created_at" yaml:"created_at,omitempty"`
 	UpdatedAt    null.Time         `boil:"updated_at" json:"updated_at,omitempty" toml:"updated_at" yaml:"updated_at,omitempty"`

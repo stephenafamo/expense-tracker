@@ -26,7 +26,6 @@ func (s *server) loadRoutes() {
 	s.router.Use(s.redirectIfLoggedIn)
 
 	s.router.NotFound(s.Handlers.use("404"))
-	s.router.HandleFunc("/", s.Handlers.use("Home"))
 	s.router.Mount("/auth", http.StripPrefix("/auth", s.auth.Config.Core.Router))
 	s.router.Mount("/static/", http.FileServer(s.Files))
 
@@ -34,5 +33,17 @@ func (s *server) loadRoutes() {
 		// protected pages
 		protect.Use(s.authMW)
 		protect.Use(lock.Middleware(s.auth))
+
+		protect.Get("/", s.Handlers.use("Dashboard"))
+
+		protect.Get("/transactions/add", s.Handlers.use("AddTransactionForm"))
+		protect.Post("/transactions/add", s.Handlers.use("AddTransaction"))
+		protect.Post("/transactions", s.Handlers.use("AddTransaction"))
+
+		protect.Get("/transaction/{id}", s.Handlers.use("ViewTransaction"))
+		protect.Post("/transaction/{id}", s.Handlers.use("EditTransaction"))
+		protect.Post("/transaction/{id}/delete", s.Handlers.use("DeleteTransaction"))
+
+		protect.Get("/transactions", s.Handlers.use("ListTransactions"))
 	})
 }
