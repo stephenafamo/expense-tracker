@@ -52,7 +52,6 @@ func (s *server) configure() {
 	s.configureAuth()
 	s.loadFiles()
 	s.registerHandlers()
-	s.loadRoutes()
 }
 
 func (s *server) addAdminUser() {
@@ -91,6 +90,7 @@ func (s *server) configureMailer() {
 func (s *server) configureRouter() {
 	r := chi.NewRouter()
 	s.router = r
+	s.loadRoutes()
 }
 
 func (s *server) loadFiles() {
